@@ -3,8 +3,13 @@
 This repository houses an automated trading bot designed for trading gold (XAU/USD) on the MetaTrader 5 (MT5) platform. The bot is developed to execute pre-defined trading strategies, aiming to capitalize on market opportunities for gold.
 
 ## Collaborators
-- Marlon Trujillo
-- Germain Miquilena
+- M0
+- El ProfeXau
+
+## Pending:
+- Precio en eje Y
+- Aceptar recargar nuevos parametros sin cerrar el bot.
+- Empezar la tecnica de compra venta.
 
 ## Features (Planned/Under Development)
 
