@@ -1,8 +1,3 @@
-//+------------------------------------------------------------------+
-//|                                               StrategyLogic.mqh  |
-//|                        Creado por Gemini AI para El ProfeXau       |
-//|                     Implementa "La Estrategia" de trading        |
-//+------------------------------------------------------------------+
 #property copyright "Gemini AI / El ProfeXau"
 #property link      "https"
 
