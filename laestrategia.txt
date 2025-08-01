@@ -37,12 +37,12 @@
        |                                      |
       Sí                                     No
        |                                      |
-       v                                      v
-(Continuar al siguiente paso)            +----------+
-                                         | [FIN]    |
-                                         +----------+
-                            |
-                            v
+       |                                      v
+       |                                  +----------+
+       |                                  | [FIN]    |
+       |                                  +----------+
+       |
+       v
       +-------------------------------------------+
       |        SECCIÓN 2: ANÁLISIS DE ZONA        |
       +-------------------------------------------+
@@ -58,13 +58,13 @@
 +---------------------------+-------------------------------+--------------------------+
 |                           |                               |                          |
 | ESTRATEGIA:               | ESTRATEGIA:                   | ESTRATEGIA:              |
-| **SÓLO VENTAS** | **COMPRAS Y VENTAS** | **SÓLO COMPRAS** |
+| **SÓLO VENTAS**           | **COMPRAS Y VENTAS**          | **SÓLO COMPRAS**         |
 | |                         | |                             | |                        |
-| +------> (Ir a Lógica de Venta) |                         | +----> (Ir a Lógica de Compra)
+| +-----> (Lógica de Venta) | |                             | +----> (Lógica de Compra)
 |                           | |                             |                          |
-|                           | +------> (Ir a Lógica de Compra) |                          |
+|                           | +------> (Lógica de Compra)   |                          |
 |                           | |                             |                          |
-|                           | +------> (Ir a Lógica de Venta) |                          |
+|                           | +------> (Lógica de Venta)    |                          |
 |                           |                               |                          |
 v                           v                               v                          v
       +-----------------------------------------------------------------+
@@ -79,7 +79,7 @@ v                           v                               v                   
  Sí              No                                 Sí              No
   |               |                                  |               |
   v               +----> (Abrir COMPRA inicial)      v               +----> (Abrir VENTA inicial)
-(Verificar si                          |             (Verificar si                          |
+(Verificar si                         |             (Verificar si                         |
  se necesita                          |              se necesita                          |
  martingala)                          v              martingala)                          v
   |                                [FIN]               |                                [FIN]

@@ -1,6 +1,6 @@
 #property copyright "m0 / El ProfeXau"
 #property link      ""
-#property version   "3.0" // Versión con Zonas Operativas Simplificadas
+#property version   "1.0"
 
 #include <Trade\Trade.mqh>
 #include <Trade\SymbolInfo.mqh>
@@ -70,7 +70,7 @@ int OnInit()
 
 void OnTick()
 {
-    // 1. Actualiza el Fibo base (esta función es eficiente, solo trabaja cuando hay un nuevo periodo)
+    // 1. Actualiza el Fibo base (solo trabaja cuando hay un nuevo periodo)
     UpdateBasePeriodAnalysis();
     
     // 2. Detecta y dibuja las zonas operativas en cada tick

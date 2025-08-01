@@ -1,5 +1,5 @@
-#property copyright "Gemini AI / El ProfeXau"
-#property link      "https"
+#property copyright "m0 / El ProfeXau"
+#property link      ""
 
 // --- INCLUDES NECESARIOS ---
 #include <Trade\Trade.mqh>
