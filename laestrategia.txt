@@ -1,108 +1,41 @@
+Estrategia de entrada al mercado al día de hoy 06 de junio del 2025.
+El bot va a tener 2 formas de entrar al mercado, modo scalping trade y modo swing trade
+La vela de la semana pasada es alcista, entonces debe trazar el Fibonacci en la vela anterior de abajo hacia arriba quedando de la siguiente forma:
+Modo Scalping
 
-                  +-------------------------+
-                  |  [INICIO] - Nuevo Tick  |
-                  +-------------------------+
-                            |
-                            v
-      +-------------------------------------------+
-      |        SECCIÓN 1: FILTROS GENERALES       |
-      +-------------------------------------------+
-                            |
-                            v
-+-----------------------------------------------------------+
-|              ¿Meta de ganancia diaria alcanzada?          |
-|              O ¿Fuera de horario de operación?              |
-+-----------------------------------------------------------+
-       |                                      |
-      No                                     Sí
-       |                                      |
-       v                                      v
-(Continuar al siguiente paso)            +------------------------------------+
-                                         | MODO CIERRE:                         |
-                                         | 1. NO abrir NUNCA operaciones nuevas.|
-                                         | 2. Esperar a que se cierren solas.   |
-                                         |    (No se aplica martingala)         |
-                                         +------------------------------------+
-                                                        |
-                                                        v
-                                                   +----------+
-                                                   | [FIN]    |
-                                                   +----------+
-                            |
-                            v
-+-----------------------------------------------------------+
-|                  ¿Es un día de trabajo válido?            |
-|              (Lunes-Jueves por defecto)                   |
-+-----------------------------------------------------------+
-       |                                      |
-      Sí                                     No
-       |                                      |
-       |                                      v
-       |                                  +----------+
-       |                                  | [FIN]    |
-       |                                  +----------+
-       |
-       v
-      +-------------------------------------------+
-      |        SECCIÓN 2: ANÁLISIS DE ZONA        |
-      +-------------------------------------------+
-                            |
-                            v
-+-----------------------------------------------------------+
-|           Analizar zona de precio actual (Fibonacci)      |
-+-----------------------------------------------------------+
-                            |
-+---------------------------+-------------------------------+--------------------------+
-| Zona Venta                | Zona Rango (Scalping)         | Zona Compra              |
-| (Precio < 23.6%)          | (23.6% <= Precio <= 78.6%)    | (Precio > 78.6%)         |
-+---------------------------+-------------------------------+--------------------------+
-|                           |                               |                          |
-| ESTRATEGIA:               | ESTRATEGIA:                   | ESTRATEGIA:              |
-| **SÓLO VENTAS**           | **COMPRAS Y VENTAS**          | **SÓLO COMPRAS**         |
-| |                         | |                             | |                        |
-| +-----> (Lógica de Venta) | |                             | +----> (Lógica de Compra)
-|                           | |                             |                          |
-|                           | +------> (Lógica de Compra)   |                          |
-|                           | |                             |                          |
-|                           | +------> (Lógica de Venta)    |                          |
-|                           |                               |                          |
-v                           v                               v                          v
-      +-----------------------------------------------------------------+
-      |                 SECCIÓN 3: LÓGICA DE TRADING                    |
-      +-----------------------------------------------------------------+
 
-      (Lógica de Compra)                                (Lógica de Venta)
-+--------------------------------+                 +--------------------------------+
-| ¿Hay compras abiertas?         |                 | ¿Hay ventas abiertas?          |
-+--------------------------------+                 +--------------------------------+
-  |               |                                  |               |
- Sí              No                                 Sí              No
-  |               |                                  |               |
-  v               +----> (Abrir COMPRA inicial)      v               +----> (Abrir VENTA inicial)
-(Verificar si                         |             (Verificar si                         |
- se necesita                          |              se necesita                          |
- martingala)                          v              martingala)                          v
-  |                                [FIN]               |                                [FIN]
-  v                                                    v
-+--------------------------------+                 +--------------------------------+
-| ¿Precio actual <= Precio de la |                 | ¿Precio actual >= Precio de la |
-| última compra - PipStep?       |                 | última venta + PipStep?        |
-+--------------------------------+                 +--------------------------------+
-  |               |                                  |               |
- Sí              No                                 Sí              No
-  |               |                                  |               |
-  v               v                                  v               v
-(Aplicar         [FIN]                             (Aplicar         [FIN]
- Martingala)                                       Martingala)
-  |                                                  |
-  v                                                  v
-+--------------------------------+                 +--------------------------------+
-| 1. Abrir nueva COMPRA con lote |                 | 1. Abrir nueva VENTA con lote  |
-|    multiplicado.               |                 |    multiplicado.               |
-| 2. Ajustar el TP de TODAS las  |                 | 2. Ajustar el TP de TODAS las  |
-|    compras a un nuevo punto de |                 |    ventas a un nuevo punto de  |
-|    equilibrio + ganancia.      |                 |    equilibrio + ganancia.      |
-+--------------------------------+                 +--------------------------------+
-                 |                                                  |
-                 v                                                  v
-              [FIN]                                              [FIN]
+
+Ahora bien, el precio se encuentra antes de la apertura del mercado en zona verde, es decir entre el 23 . 6% y 78.6% de Fibonacci por lo que deberá trabajar de la siguiente forma:
+Días de trabajo:
+EL bot debe ser configurable los días de trabajo, aunque predeterminadamente debe trabajar lunes, martes, miércoles y jueves. El día viernes queda inhabilitado de forma predeterminada, aunque el usuario lo puede activar si desea. También debe tener la opción de deshabilitar los días de trabajo teniendo como resultado que trabajará todos los días.
+Horario de trabajo:
+En cuanto al horario de trabajo el mismo debe ajustarse en hora UTC militar, es decir desde las 00:00 hasta las 23:59. El horario predeterminado donde el bot comenzará a abrir operaciones será de 08:00 a 11:00 UTC. También debe tener la opción de deshabilitar las horas de trabajo teniendo como resultado que trabajará las 24 horas.
+
+Compras y vender:
+Modo Scalping: 
+Cómo el bot está en zona verde, el deberá iniciar la jornada el lunes a las 8:00 horas abriendo las siguientes operaciones predeterminadas:
+Lotaje (Configurable) Inicial: 0.01 toma de ganancias medio dólar en la acción del precio.
+Take Profits (Configurable): 0.5$ de ganancias hablando en dólares y si hablamos en pips no sé como te sale en el programa, pueden ser 5 pips o 50 pips o 500 pips, ahí te debe salir cuantos pips deben ser para que la ganancia sean 0.5$ pudiendo configurar para que sean más dólares, pero predeterminado 0,5$.
+Ejemplo: se activa la hora operativa y el precio se encuentra en el rango verde, automáticamente debe lanzar 2 operaciones:
+Buy a precio de mercado y Sell a precio del mercado (porque está en zona verde) con toma de ganancias a medio centavo de su apertura, compró y vendió en 3000$ debe cerrar la compra en 3000.5$ y la venta en 2999.5$ e inmediatamente abrir otra operación al cerrar una en ganancias, es decir si primero cierra la compra debe abrir otra inmediatamente y si primero cierra la venta debe abrir otra inmediatamente.
+Pip Step Configurable (5$ de la acción del precio o 5000 o 500 pips): La operación que no cierre se va a quedar abierta hasta que cierre y si se va en contra entonces debe hacer lo siguiente:
+Un ejemplo en ventas:
+Buy 0.01 a precio de mercado en 3000$ con TP de medio centavo en 3000.5$ no cerró y el precio comienza a caer, pero estamos en zona verde.
+Abre otra compra buy en 2995$(Porque el pipstep está configurado a 5 dólares de distancia) sin martin gana a 0.01 lotes y el take profit se modifica y debe quedar aproximadamente en 2998$
+El precio sigue cayendo y está en 2990, ahí se activa el martin gala por lo que deberá abrir otra compra y la operación ahora en 0.02 lotes para acercar el take profit (no sé matemáticamente donde quedaría el cierre)
+Si el precio sigue cayendo el debe ir haciendo lo mismo, tirando compras con con marting gala, se que hay varias formas de configurar el marting gala ahí te debe salir, creo que hay una forma de martin gala suave y una mas agresiva pero no se como lo verás en el código y si te da la opción se debe poner para que el usuario escoja el tipo de martin gala.
+Entonces debe hacer lo mismo dependiendo de en que parte del Fibonacci se encuentre el precio:
+Si el precio se mantiene igual o menor que el 78.6% y mayor o igual que el 23.6% su operativa será compra y venta con un Take Profit o toma de ganancia de cada operación de 0.5$ hasta que sume ganancias diarias entre el 0.5% y 10% (Configurable por el usuario)  del capital para luego apagarse y no operar hasta el otro día.
+Si el precio es mayor que 78.6% su operativa será solo compras con un Take Profit o toma de ganancia de cada operación de 0.5$ hasta que sume ganancias diarias entre el 0.5% y 10% (Configurable por el usuario) del capital para luego apagarse y no operar hasta el otro día.
+Si el precio es menor que el 23.6% su operativa será solo ventas con un Take Profit o toma de ganancia de cada operación de 0.5$ hasta que sume ganancias diarias entre el 0.5% y 10% (Configurable por el usuario) del capital para luego apagarse y no operar hasta el otro día.
+Si el precio está es menor que 0% o mayor que 100% no hace ninguna operación y envía un mensaje de fuera de rango y espera estar dentro de los valores anteriores
+
+Cuando termina de trabajar el bot?
+El debe trabajar hasta que se cumplan cualquiera de las 2 condiciones siguientes:
+Haber alcanzado el porcentaje diario configurado (Entre el 1 y el 10% diario configurable) y está trabajando de 8 a 11 UTC y a las 9:30 UTC el cumplió el % indicado y tienes compras y ventas abiertas, no va abrir más operaciones, solo va a buscar cerrar las que están, si primero cierra las compras entonces no abre más compras solo le queda esperar que cierren las ventas haciendo su proceso y al cerrarlas entonces no trabaja más hasta el próximo día.
+Si el bot está configurado para trabajar de 8 a 11 UTC y son las 11 y no ha logrado cumplir el porcentaje indicado, no va abrir más operaciones, solo va a buscar cerrar las que ya están abiertas, si tiene compras y ventas y cierra todas las compras, no va a abrir más compras, solo va a buscar cerrar las ventas que queden.
+
+Una vez puedas escribir esto debes dejar un espacio en el código con una opción que llamaremos Modo Recovery para evitar los stops loss que es lo que va a marcar la diferencia en nuestro robot, pero vamos primero a que esto quede bien.
+
+
+

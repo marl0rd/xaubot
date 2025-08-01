@@ -1,0 +1,108 @@
+
+                  +-------------------------+
+                  |  [INICIO] - Nuevo Tick  |
+                  +-------------------------+
+                            |
+                            v
+      +-------------------------------------------+
+      |        SECCIÓN 1: FILTROS GENERALES       |
+      +-------------------------------------------+
+                            |
+                            v
++-----------------------------------------------------------+
+|              ¿Meta de ganancia diaria alcanzada?          |
+|              O ¿Fuera de horario de operación?              |
++-----------------------------------------------------------+
+       |                                      |
+      No                                     Sí
+       |                                      |
+       v                                      v
+(Continuar al siguiente paso)            +------------------------------------+
+                                         | MODO CIERRE:                         |
+                                         | 1. NO abrir NUNCA operaciones nuevas.|
+                                         | 2. Esperar a que se cierren solas.   |
+                                         |    (No se aplica martingala)         |
+                                         +------------------------------------+
+                                                        |
+                                                        v
+                                                   +----------+
+                                                   | [FIN]    |
+                                                   +----------+
+                            |
+                            v
++-----------------------------------------------------------+
+|                  ¿Es un día de trabajo válido?            |
+|              (Lunes-Jueves por defecto)                   |
++-----------------------------------------------------------+
+       |                                      |
+      Sí                                     No
+       |                                      |
+       |                                      v
+       |                                  +----------+
+       |                                  | [FIN]    |
+       |                                  +----------+
+       |
+       v
+      +-------------------------------------------+
+      |        SECCIÓN 2: ANÁLISIS DE ZONA        |
+      +-------------------------------------------+
+                            |
+                            v
++-----------------------------------------------------------+
+|           Analizar zona de precio actual (Fibonacci)      |
++-----------------------------------------------------------+
+                            |
++---------------------------+-------------------------------+--------------------------+
+| Zona Venta                | Zona Rango (Scalping)         | Zona Compra              |
+| (Precio < 23.6%)          | (23.6% <= Precio <= 78.6%)    | (Precio > 78.6%)         |
++---------------------------+-------------------------------+--------------------------+
+|                           |                               |                          |
+| ESTRATEGIA:               | ESTRATEGIA:                   | ESTRATEGIA:              |
+| **SÓLO VENTAS**           | **COMPRAS Y VENTAS**          | **SÓLO COMPRAS**         |
+| |                         | |                             | |                        |
+| +-----> (Lógica de Venta) | |                             | +----> (Lógica de Compra)
+|                           | |                             |                          |
+|                           | +------> (Lógica de Compra)   |                          |
+|                           | |                             |                          |
+|                           | +------> (Lógica de Venta)    |                          |
+|                           |                               |                          |
+v                           v                               v                          v
+      +-----------------------------------------------------------------+
+      |                 SECCIÓN 3: LÓGICA DE TRADING                    |
+      +-----------------------------------------------------------------+
+
+      (Lógica de Compra)                                (Lógica de Venta)
++--------------------------------+                 +--------------------------------+
+| ¿Hay compras abiertas?         |                 | ¿Hay ventas abiertas?          |
++--------------------------------+                 +--------------------------------+
+  |               |                                  |               |
+ Sí              No                                 Sí              No
+  |               |                                  |               |
+  v               +----> (Abrir COMPRA inicial)      v               +----> (Abrir VENTA inicial)
+(Verificar si                         |             (Verificar si                         |
+ se necesita                          |              se necesita                          |
+ martingala)                          v              martingala)                          v
+  |                                [FIN]               |                                [FIN]
+  v                                                    v
++--------------------------------+                 +--------------------------------+
+| ¿Precio actual <= Precio de la |                 | ¿Precio actual >= Precio de la |
+| última compra - PipStep?       |                 | última venta + PipStep?        |
++--------------------------------+                 +--------------------------------+
+  |               |                                  |               |
+ Sí              No                                 Sí              No
+  |               |                                  |               |
+  v               v                                  v               v
+(Aplicar         [FIN]                             (Aplicar         [FIN]
+ Martingala)                                       Martingala)
+  |                                                  |
+  v                                                  v
++--------------------------------+                 +--------------------------------+
+| 1. Abrir nueva COMPRA con lote |                 | 1. Abrir nueva VENTA con lote  |
+|    multiplicado.               |                 |    multiplicado.               |
+| 2. Ajustar el TP de TODAS las  |                 | 2. Ajustar el TP de TODAS las  |
+|    compras a un nuevo punto de |                 |    ventas a un nuevo punto de  |
+|    equilibrio + ganancia.      |                 |    equilibrio + ganancia.      |
++--------------------------------+                 +--------------------------------+
+                 |                                                  |
+                 v                                                  v
+              [FIN]                                              [FIN]
