@@ -64,6 +64,9 @@ int OnInit()
     for(int i = 0; i < total_levels; i++)
         g_fib_percentages[i] = StringToDouble(temp_string_array[i]);
 
+    ChartSetInteger(0, CHART_SHIFT, 1);
+    ChartSetDouble(0, CHART_SHIFT_SIZE, 20.0);
+
     Print("EA Inicializado.");
     return(INIT_SUCCEEDED);
 }
@@ -167,9 +170,9 @@ void DetectAndDrawZones()
     datetime time1 = g_last_period_candle_time;
     datetime time2 = time1 + (100 * 3600); 
 
-    color color_buy_sell = C'255, 255, 0'; // Amarillo
-    color color_ranging  = C'0, 255, 0';   // Verde
-    color color_out      = C'255, 0, 0';   // Rojo
+    color color_buy_sell = C'155, 155, 0'; // Amarillo
+    color color_ranging  = C'0, 56, 15';   // Verde
+    color color_out      = C'100, 0, 15';   // Rojo
 
     // Dibujamos las 5 zonas
     CreateRectangle("Zone_Upper_OUT", time1, g_period_high, time2, g_period_high + range*0.2, color_out, g_CurrentZone == ZONE_OUT_OF_RANGE && current_price > g_period_high);
@@ -294,17 +297,17 @@ void DrawFibonacciObject(datetime time1, double price1, datetime time2, double p
     }
 
     int total_levels = ArraySize(g_fib_percentages);
-    for(int i = 0; i < total_levels; i++)
-    {
+    for(int i = 0; i < total_levels; i++) {
+        double level_price = price1 + (price2 - price1) * g_fib_percentages[i];
         ObjectSetDouble(0, object_name, OBJPROP_LEVELVALUE, i, g_fib_percentages[i]);
-        ObjectSetString(0, object_name, OBJPROP_LEVELTEXT, i, StringFormat("%.1f%%", g_fib_percentages[i] * 100));
+        ObjectSetString(0, object_name, OBJPROP_LEVELTEXT, i, StringFormat("%.1f%% - %.*f", g_fib_percentages[i] * 100, _Digits, level_price));
     }
 
-    ObjectSetInteger(0, object_name, OBJPROP_COLOR, clrGold);
+    ObjectSetInteger(0, object_name, OBJPROP_COLOR, clrLinen);
     ObjectSetInteger(0, object_name, OBJPROP_WIDTH, 1);
     ObjectSetInteger(0, object_name, OBJPROP_RAY_RIGHT, true);
     ObjectSetInteger(0, object_name, OBJPROP_SELECTABLE, false);
-    ObjectSetInteger(0, object_name, OBJPROP_BACK, true);
+    ObjectSetInteger(0, object_name, OBJPROP_BACK, false);
 
     ChartRedraw();
     Print("Objeto Fibonacci (", EnumToString(_BaseTimeframe), ") dibujado/actualizado.");
