@@ -1,28 +1,36 @@
-Estrategia de entrada al mercado al día de hoy 06 de junio del 2025.
-El bot va a tener 2 formas de entrar al mercado, modo scalping trade y modo swing trade
-La vela de la semana pasada es alcista, entonces debe trazar el Fibonacci en la vela anterior de abajo hacia arriba quedando de la siguiente forma:
-Modo Scalping
+# Estrategia de entrada al mercado al día de hoy 06 de junio del 2025.
 
-
-
-Ahora bien, el precio se encuentra antes de la apertura del mercado en zona verde, es decir entre el 23 . 6% y 78.6% de Fibonacci por lo que deberá trabajar de la siguiente forma:
-Días de trabajo:
+## Ventana de trabajo
+* Días de trabajo:
 EL bot debe ser configurable los días de trabajo, aunque predeterminadamente debe trabajar lunes, martes, miércoles y jueves. El día viernes queda inhabilitado de forma predeterminada, aunque el usuario lo puede activar si desea. También debe tener la opción de deshabilitar los días de trabajo teniendo como resultado que trabajará todos los días.
-Horario de trabajo:
+
+* Horario de trabajo:
 En cuanto al horario de trabajo el mismo debe ajustarse en hora UTC militar, es decir desde las 00:00 hasta las 23:59. El horario predeterminado donde el bot comenzará a abrir operaciones será de 08:00 a 11:00 UTC. También debe tener la opción de deshabilitar las horas de trabajo teniendo como resultado que trabajará las 24 horas.
 
-Compras y vender:
-Modo Scalping: 
-Cómo el bot está en zona verde, el deberá iniciar la jornada el lunes a las 8:00 horas abriendo las siguientes operaciones predeterminadas:
-Lotaje (Configurable) Inicial: 0.01 toma de ganancias medio dólar en la acción del precio.
-Take Profits (Configurable): 0.5$ de ganancias hablando en dólares y si hablamos en pips no sé como te sale en el programa, pueden ser 5 pips o 50 pips o 500 pips, ahí te debe salir cuantos pips deben ser para que la ganancia sean 0.5$ pudiendo configurar para que sean más dólares, pero predeterminado 0,5$.
+## Formas de trabajo:
+El bot va a tener 2 formas de entrar al mercado:
+* modo scalping trade
+* modo swing trade
+
+El codigo e1 determina las zonas de operacion en color verde, dependiendo del fibonacci del periodo anterior.
+
+### Modo Scalping: 
+Cómo el bot está en zona verde, el deberá iniciar la jornada abriendo las siguientes operaciones predeterminadas:
+* Lotaje (Configurable) Inicial: 0.01 toma de ganancias medio dólar en la acción del precio.
+* Take Profits (Configurable): 0.5$ de ganancias en el caso de dólares y si se configura en pips ajustar con posibilidades de la api, pueden ser 5 pips o 50 pips o 500 pips, confirmar cuantos pips deben ser para que la ganancia sean 0.5$ pudiendo configurar para que sean más dólares, pero predeterminado 0,5$.
+
 Ejemplo: se activa la hora operativa y el precio se encuentra en el rango verde, automáticamente debe lanzar 2 operaciones:
-Buy a precio de mercado y Sell a precio del mercado (porque está en zona verde) con toma de ganancias a medio centavo de su apertura, compró y vendió en 3000$ debe cerrar la compra en 3000.5$ y la venta en 2999.5$ e inmediatamente abrir otra operación al cerrar una en ganancias, es decir si primero cierra la compra debe abrir otra inmediatamente y si primero cierra la venta debe abrir otra inmediatamente.
-Pip Step Configurable (5$ de la acción del precio o 5000 o 500 pips): La operación que no cierre se va a quedar abierta hasta que cierre y si se va en contra entonces debe hacer lo siguiente:
-Un ejemplo en ventas:
-Buy 0.01 a precio de mercado en 3000$ con TP de medio centavo en 3000.5$ no cerró y el precio comienza a caer, pero estamos en zona verde.
-Abre otra compra buy en 2995$(Porque el pipstep está configurado a 5 dólares de distancia) sin martin gana a 0.01 lotes y el take profit se modifica y debe quedar aproximadamente en 2998$
-El precio sigue cayendo y está en 2990, ahí se activa el martin gala por lo que deberá abrir otra compra y la operación ahora en 0.02 lotes para acercar el take profit (no sé matemáticamente donde quedaría el cierre)
+Buy a precio de mercado y Sell a precio del mercado con toma de ganancias a medio centavo de su apertura. Ejemplo: compró y vendió en 3000$, entonces debe cerrar la compra en 3000.5$ y la venta en 2999.5$ e inmediatamente abrir otra operación al cerrar una en ganancias, es decir si primero cierra la compra debe abrir otra inmediatamente y si primero cierra la venta debe abrir otra inmediatamente.
+
+Nota:
+**Pip Step Configurable (5$ de la acción del precio o 5000 o 500 pips)**: La operación que no cierre se va a quedar abierta hasta que cierre y si se va en contra entonces debe hacer lo siguiente:
+
+`ventas cuando todo se va en contra`:
+- Buy 0.01 a precio de mercado en 3000$ con TP de medio centavo en 3000.5$ no cerró y el precio comienza a caer, pero estamos en zona verde.
+- Abre otra compra buy en 2995$(Porque el pipstep está configurado a 5 dólares de distancia) sin martin gala a 0.01 lotes y el take profit se modifica y debe quedar aproximadamente en 2998$
+-El precio sigue cayendo y está en 2990, ahí se activa el martin gala por lo que deberá abrir otra compra y la operación ahora en 0.02 lotes para acercar el take profit (no sé matemáticamente donde quedaría el cierre)
+
+
 Si el precio sigue cayendo el debe ir haciendo lo mismo, tirando compras con con marting gala, se que hay varias formas de configurar el marting gala ahí te debe salir, creo que hay una forma de martin gala suave y una mas agresiva pero no se como lo verás en el código y si te da la opción se debe poner para que el usuario escoja el tipo de martin gala.
 Entonces debe hacer lo mismo dependiendo de en que parte del Fibonacci se encuentre el precio:
 Si el precio se mantiene igual o menor que el 78.6% y mayor o igual que el 23.6% su operativa será compra y venta con un Take Profit o toma de ganancia de cada operación de 0.5$ hasta que sume ganancias diarias entre el 0.5% y 10% (Configurable por el usuario)  del capital para luego apagarse y no operar hasta el otro día.
