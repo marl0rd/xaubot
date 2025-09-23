@@ -11,11 +11,11 @@
 #include <Trade\Trade.mqh>
 #include <Trade\SymbolInfo.mqh>
 
-#include "Modules\ControlSesion.mqh"
-#include "Modules\CriteriosFinalizacion.mqh"
-#include "Modules\GestionOrdenes.mqh"
-#include "Modules\LogicaEntrada.mqh"
-#include "Modules\ModoRecuperacion.mqh"
+#include "ControlSesion.mqh"
+#include "CriteriosFinalizacion.mqh"
+#include "GestionOrdenes.mqh"
+#include "LogicaEntrada.mqh"
+#include "ModoRecuperacion.mqh"
 
 enum ENUM_TRADE_DIRECTION
 {
